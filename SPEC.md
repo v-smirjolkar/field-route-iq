@@ -137,8 +137,9 @@ Promotions live in `src/data/promotions.json`. Three `type` values exist:
   `order-total` (text content = formatted number with 2 decimals, no currency symbol).
 - The submit button (`data-testid="submit-order"`) is disabled when the cart is empty.
 
-## 9. What's public vs. hidden
+## 9. Scoring — hidden tests, judged at the end
 
-`src/pricing/engine.public.test.ts` contains a handful of public tests so you can
-sanity-check your reading of this spec. The judging suite is a superset written from
-this document, covering the rules and edge cases above. It is not in this repository.
+**This repo ships with no tests.** Your agent builds `priceOrder` from this document and
+must not write or run tests. At judging time a hidden suite — written strictly from this
+spec, covering every rule and edge case above — is run against your `engine.ts` to score
+correctness. This document is the entire surface: read it carefully.

@@ -9,7 +9,6 @@ React + TypeScript + Vite, designed for tablet use in-store.
 ```bash
 npm install
 npm run dev      # start the dev server
-npm test         # run the test suite (vitest)
 npm run build    # type-check and produce a production build
 ```
 
@@ -31,14 +30,13 @@ in `src/data/index.ts`. Submitted orders persist to `localStorage`
 
 The order screen currently totals the cart at list price — **no promotions
 are applied**. The promotion & pricing engine described in [`SPEC.md`](SPEC.md)
-is deliberately unimplemented (`src/pricing/` does not exist yet), and the
-public pricing tests referenced there will fail until it is built. See
-[`RULES.md`](RULES.md) for the workshop format.
+is deliberately unimplemented (`src/pricing/engine.ts` does not exist yet).
+Your job is to get an AI agent to build it. **This repo ships with no pricing
+tests** — a hidden suite scores your work at the end. See [`RULES.md`](RULES.md)
+for the format and how to submit.
 
-Everything else — routing, data loaders, order persistence, the test setup —
-is complete and green:
+Everything else — routing, data loaders, order persistence — is complete:
 
 ```bash
-npm test         # passes (app smoke tests)
 npm run build    # passes
 ```
