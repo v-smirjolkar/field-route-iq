@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Harness Gallery — Field Route IQ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#0b0f15; --panel:#131a24; --panel2:#0f151d; --hair:#243040; --ink:#eef2f7; --dim:#8b99ac;
+    --amber:#e6a24a; --amber-soft:#2a2013; --green:#4bbd85; --green-soft:#12241b; --blue:#6ba3e0;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f4f6f9; --panel:#ffffff; --panel2:#f7f9fb; --hair:#e2e7ee; --ink:#161c24; --dim:#5c6775;
+      --amber:#b26a12; --amber-soft:#f6ecdb; --green:#1f8f5f; --green-soft:#e4f2ea; --blue:#2f6fb0; }
+  }
+  :root[data-theme="light"]{ --bg:#f4f6f9; --panel:#ffffff; --panel2:#f7f9fb; --hair:#e2e7ee; --ink:#161c24; --dim:#5c6775;
+    --amber:#b26a12; --amber-soft:#f6ecdb; --green:#1f8f5f; --green-soft:#e4f2ea; --blue:#2f6fb0; }
+  :root[data-theme="dark"]{ --bg:#0b0f15; --panel:#131a24; --panel2:#0f151d; --hair:#243040; --ink:#eef2f7; --dim:#8b99ac;
+    --amber:#e6a24a; --amber-soft:#2a2013; --green:#4bbd85; --green-soft:#12241b; --blue:#6ba3e0; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;padding:44px 20px 80px}
+  .wrap{max-width:940px;margin:0 auto}
+  a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:12px}
+  h1{font-size:clamp(28px,5vw,42px);letter-spacing:-.02em;margin:0 0 12px;font-weight:800;text-wrap:balance}
+  .lede{color:var(--dim);font-size:17px;max-width:64ch;margin:0}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:30px 0 10px}
+  .stat{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:15px 16px}
+  .stat .k{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim)}
+  .stat .v{font-family:var(--mono);font-size:22px;font-weight:750;margin-top:5px;font-variant-numeric:tabular-nums}
+  .stat .v.g{color:var(--green)} .stat .v.a{color:var(--amber)}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  .archetype{margin-top:44px}
+  .archetype > h2{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+  .archetype > .blurb{color:var(--dim);font-size:15px;margin:0 0 18px;max-width:66ch}
+  .atag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+
+  .card{background:var(--panel);border:1px solid var(--hair);border-radius:14px;padding:20px 22px;margin-top:14px}
+  .card.top{border-color:var(--amber)}
+  .chead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .chead .nm{font-family:var(--mono);font-size:17px;font-weight:700}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}
+  .chip{font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:100px;white-space:nowrap;border:1px solid var(--hair);color:var(--dim);font-variant-numeric:tabular-nums}
+  .chip.pass{background:var(--green-soft);color:var(--green);border-color:transparent}
+  .chip.cost{background:var(--amber-soft);color:var(--amber);border-color:transparent}
+  .chip.reuse{border-color:var(--blue);color:var(--blue)}
+  .cbody{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);gap:20px}
+  @media(max-width:640px){.cbody{grid-template-columns:1fr;gap:12px}}
+  .files{background:var(--panel2);border:1px solid var(--hair);border-radius:10px;padding:12px 14px;overflow-x:auto}
+  .files .l{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);margin-bottom:7px}
+  .files pre{margin:0;font-family:var(--mono);font-size:12px;line-height:1.6;white-space:pre;color:var(--ink)}
+  .files .d{color:var(--amber)}
+  .say{font-size:14.5px;margin:0}
+  .say b{color:var(--ink)}
+  .link{font-family:var(--mono);font-size:12.5px;margin-top:10px;display:inline-block}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--hair);color:var(--dim);font-size:13px;font-family:var(--mono);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Field Route IQ · Harness Hackathon</div>
+  <h1>The Harness Gallery</h1>
+  <p class="lede">Everyone built the same three modules. What separated them was the harness they
+    engineered around the agent. Grouped here by <b>approach</b>, not cost — because the real
+    artifact of the night is the harness. Each links to the actual files.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Submissions</div><div class="v">24</div></div>
+    <div class="stat"><div class="k">Cleared the gate</div><div class="v g">68/68</div></div>
+    <div class="stat"><div class="k">Lowest credits</div><div class="v a">4.86</div></div>
+    <div class="stat"><div class="k">Harness archetypes</div><div class="v">5</div></div>
+  </div>
+
+  <!-- ARCHETYPE 1 -->
+  <section class="archetype">
+    <div class="atag">Archetype 01</div>
+    <h2>Multi-agent systems</h2>
+    <p class="blurb">A team of role-defined agents (orchestrator, builder, tester, reviewer) plus a
+      library of skills. The most elaborate structures — and the skeleton is reusable on any project.</p>
+
+    <div class="card top">
+      <div class="chead"><span class="nm">KeshavSinghYadavMAQ</span>
+        <span class="chips"><span class="chip pass">68/68 · 16/16</span><span class="chip cost">8.99</span><span class="chip reuse">reusable framework</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/</span>
+  copilot-instructions.md
+  <span class="d">agents/</span> orchestrator, builder,
+          tester, reviewer
+  <span class="d">skills/</span> pricing, audit,
+          settlement
+Agents.md · <span class="d">scripts/</span>harness.js</pre></div>
+        <div><p class="say">Four agent roles with an orchestrator coordinating build → test → review, one
+          skill per module, and a <b>custom scaffolding script</b>. The role framework and scaffolder are
+          fully portable; only the skills are task-specific — carry the skeleton, swap the skills.</p>
+          <a class="link" href="https://github.com/KeshavSinghYadavMAQ/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="chead"><span class="nm">ShivamMAQ</span>
+        <span class="chips"><span class="chip pass">68/68 · 16/16</span><span class="chip cost">13.31</span><span class="chip reuse">reusable framework</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/</span>
+  copilot-instructions.md
+  <span class="d">agents/</span> orchestrator + 3
+          module agents
+  <span class="d">skills/</span> money-rounding,
+     date-logic, promotion-
+     selection, aggregation,
+     spec-authority
+Agents.md</pre></div>
+        <div><p class="say">Five skills organized by <b>cross-cutting concern</b> rather than by module, plus
+          an explicit <b>source-precedence hierarchy</b> (task → SPEC → RULES → code → legacy). The
+          concept-skills are reusable ideas beyond this challenge.</p>
+          <a class="link" href="https://github.com/ShivamMAQ/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHETYPE 2 -->
+  <section class="archetype">
+    <div class="atag">Archetype 02</div>
+    <h2>Staged briefs + memory files</h2>
+    <p class="blurb">The pure "agent-has-amnesia" pattern: distilled per-module briefs, a run-scope file
+      that says what to build this run, and a progress note that remembers what's done. Steer by editing
+      files between runs. A portable methodology.</p>
+
+    <div class="card top">
+      <div class="chead"><span class="nm">Ankit-MAQ</span>
+        <span class="chips"><span class="chip pass">68/68 · 16/16</span><span class="chip cost">4.86</span><span class="chip reuse">reusable method</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/</span>copilot-instructions.md
+AGENTS.md
+<span class="d">harness/</span>
+  run-scope.md
+  progress-notes.md
+  brief-pricing.md
+  brief-audit.md
+  brief-settlement.md</pre></div>
+        <div><p class="say"><b>Lowest cost of the whole field.</b> An explicit "read order to keep context
+          small," distilled briefs, a run-scope + progress-notes loop, and a <b>named list of trap files
+          with the reason each is wrong</b> ("legacy uses banker's rounding… ignore"). Textbook context
+          engineering — and the methodology transfers to any brownfield build.</p>
+          <a class="link" href="https://github.com/Ankit-MAQ/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="chead"><span class="nm">developeranirudh</span>
+        <span class="chips"><span class="chip pass">68/68 · 16/16</span><span class="chip reuse">reusable method</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/</span>
+  copilot-instructions.md
+  run-scope.md
+  <span class="d">briefs/</span> pricing, audit,
+          settlement
+AGENTS.md</pre></div>
+        <div><p class="say">Same staged-scope discipline — a run-scope file drives the sequence pricing →
+          audit → settlement → final alignment, with per-module briefs and clear guardrails. Clean,
+          reproducible run recipe documented right in AGENTS.md.</p>
+          <a class="link" href="https://github.com/developeranirudh/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="chead"><span class="nm">gopalnarayanam</span>
+        <span class="chips"><span class="chip pass">68/68 · 16/16</span><span class="chip cost">14.60</span><span class="chip reuse">reusable method</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre>plan.md
+<span class="d">.github/</span>
+  copilot-instructions.md
+  <span class="d">skills/</span> field-route-iq-harness</pre></div>
+        <div><p class="say">An explicit <b>plan.md</b> decomposing all three modules, and instructions that tell
+          the agent to "read the shortest possible context" — preferring the plan and skill over re-reading
+          the full spec, updating the plan log between runs.</p>
+          <a class="link" href="https://github.com/gopalnarayanam/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHETYPE 3 -->
+  <section class="archetype">
+    <div class="atag">Archetype 03</div>
+    <h2>Skill-centric harnesses</h2>
+    <p class="blurb">Built around formal skill files and a repo map — packaging the domain knowledge as
+      reusable, on-demand modules.</p>
+
+    <div class="card">
+      <div class="chead"><span class="nm">chandayadav</span>
+        <span class="chips"><span class="chip">in progress</span><span class="chip reuse">reusable skill</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/skills/</span>
+  field-ops-suite/SKILL.md
+<span class="d">docs/</span> IMPLEMENTATION_HARNESS.md
+      IMPLEMENTATION_PLAN.md
+<span class="d">src/shared/</span>specHarness.ts</pre></div>
+        <div><p class="say">The most <b>formally structured</b> skill: proper YAML frontmatter with a
+          "use-when" description, a validation-first workflow, an implementation plan, and even a shared
+          <code>specHarness.ts</code> in code. A genuine reusable skill package.</p>
+          <a class="link" href="https://github.com/chandayadav/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="chead"><span class="nm">Karthikmaq</span>
+        <span class="chips"><span class="chip">66/68</span><span class="chip reuse">reusable framework</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/</span>copilot-instructions.md
+Agents.md · REPO_MAP.md
+<span class="d">skills/</span> 3 skill files
+plan.md</pre></div>
+        <div><p class="say">A full stack — instructions, an agent guide, a <b>REPO_MAP.md</b>, three skills, and
+          a plan. Disciplined "read-first / ignore / never-do" structure. Landed two tests from the gate,
+          a reminder that a rich harness and the last edge cases are separate battles.</p>
+          <a class="link" href="https://github.com/Karthikmaq/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHETYPE 4 -->
+  <section class="archetype">
+    <div class="atag">Archetype 04</div>
+    <h2>Lean process harness</h2>
+    <p class="blurb">No task-specific content at all — just a disciplined, repeatable workflow. The most
+      <b>generic and portable</b> of any harness here: it would work verbatim on any codebase.</p>
+
+    <div class="card">
+      <div class="chead"><span class="nm">prerakr-MAQ</span>
+        <span class="chips"><span class="chip pass">68/68 · 16/16</span><span class="chip cost">13.40</span><span class="chip reuse">fully portable</span></span></div>
+      <div class="cbody">
+        <div class="files"><div class="l">Harness</div><pre><span class="d">.github/</span>
+  copilot-instructions.md
+
+<span class="d"># one file · zero task detail</span></pre></div>
+        <div><p class="say">A single instructions file built entirely on a workflow —
+          <b>PLAN → IMPLEMENT → BUILD → FIX → REVERIFY</b> — plus discipline rules (deterministic
+          sorting, explicit rounding, return only required shapes). Passed everything with no per-module
+          knowledge at all. The purest "reusable rig you carry to the next project."</p>
+          <a class="link" href="https://github.com/prerakr-MAQ/field-route-iq" target="_blank" rel="noopener">→ view harness</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHETYPE 5 -->
+  <section class="archetype">
+    <div class="atag">Archetype 05</div>
+    <h2>Harness kept local</h2>
+    <p class="blurb">These qualified on the strength of their harness too — they just chose to keep the
+      harness files off the public fork and push only the modules. Their engines are clean, computed
+      implementations.</p>
+    <div class="card">
+      <div class="cbody" style="grid-template-columns:1fr">
+        <div><p class="say">
+          <b>rishikeshp-2247</b> — 68/68 · 6.95 &nbsp;·&nbsp;
+          <b>sivasis-t</b> — 68/68 · 16.50 &nbsp;·&nbsp;
+          <b>raishobhit</b> — 68/68 · 29.00 &nbsp;·&nbsp;
+          <b>bhimireddyr</b> — 68/68 · 51.71 &nbsp;·&nbsp;
+          <b>RoshanTavhare-MAQ</b> — 68/68 &nbsp;·&nbsp;
+          <b>v-nipunmodi</b> — 64/68
+          <br><br>
+          Same result, harness private. rishikeshp reached the second-lowest cost of the entire field
+          with a harness nobody else got to see.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Field Route IQ · Harness Hackathon · every link points to that participant's own fork</footer>
+</div>
+</body>
+</html>
