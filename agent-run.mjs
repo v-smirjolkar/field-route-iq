@@ -16,17 +16,17 @@
  *   2) copilot            → sign in with the GitHub account that HAS your Copilot
  *                           license (your work account — NOT a personal one)
  *   3) node agent-run.mjs --check
+ * (If your terminal can't find `copilot`, this wrapper still locates it in the
+ *  npm global folder — but you'll need `copilot` on PATH to sign in the first time.)
  */
-import { spawn, spawnSync } from 'node:child_process'
+import { spawn, spawnSync, execSync } from 'node:child_process'
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// Anchor everything to the repo (this script's folder) so it works from any cwd.
 const HERE = dirname(fileURLToPath(import.meta.url))
 const COST_FILE = join(HERE, 'COST.txt')
 
-// Fixed prompt: does no harness work — it delegates everything to YOUR instruction files.
 const STD_PROMPT =
   'Implement the promotion and pricing engine at src/pricing/engine.ts, exported as ' +
   'priceOrder. The authoritative spec is SPEC.md — but if the repository instructions ' +
@@ -48,17 +48,29 @@ for (let i = 0; i < argv.length; i++) {
   }
 }
 
-function cliInstalled() {
-  const r = spawnSync('copilot', ['--version'], { shell: true, encoding: 'utf8' })
-  return !r.error && r.status === 0
+// ---- locate copilot: on PATH, else in the npm global folder (common on Windows) ----
+function resolveCopilot() {
+  const onPath = spawnSync('copilot', ['--version'], { shell: true, encoding: 'utf8' })
+  if (!onPath.error && onPath.status === 0) return 'copilot'
+  const candidates = []
+  try { candidates.push(execSync('npm config get prefix', { encoding: 'utf8' }).trim()) } catch {}
+  if (process.env.APPDATA) candidates.push(join(process.env.APPDATA, 'npm'))
+  for (const dir of candidates) {
+    for (const name of ['copilot.cmd', 'copilot']) {
+      const p = join(dir, name)
+      if (existsSync(p)) return p
+    }
+  }
+  return null
 }
-if (!cliInstalled()) {
+const COPILOT = resolveCopilot()
+if (!COPILOT) {
   console.error('✗ Copilot CLI not found.\n  Install once:  npm install -g @github/copilot\n' +
     '  then run:      copilot   → sign in with your WORK GitHub account (the one with Copilot).')
   process.exit(1)
 }
 if (checkOnly) {
-  console.log('✓ Copilot CLI is installed.')
+  console.log(`✓ Copilot CLI found: ${COPILOT}`)
   console.log('  Final check: run  copilot -p "hello"  — you should see an "AI Credits …" line.')
   console.log('  No line = an account without Copilot access; sign in again with  copilot.')
   process.exit(0)
@@ -70,7 +82,7 @@ const args = ['-p', q(STD_PROMPT), '--allow-all-tools', '--no-color']
 if (model) args.push('--model', q(model))
 
 let out = ''
-const child = spawn('copilot', args, { cwd: HERE, stdio: ['inherit', 'pipe', 'pipe'], shell: true })
+const child = spawn(q(COPILOT), args, { cwd: HERE, stdio: ['inherit', 'pipe', 'pipe'], shell: true })
 child.stdout.on('data', (d) => { process.stdout.write(d); out += d })
 child.stderr.on('data', (d) => { process.stderr.write(d); out += d })
 child.on('close', () => {
@@ -79,7 +91,6 @@ child.on('close', () => {
   const total = Math.round((before + run) * 100) / 100
   writeFileSync(COST_FILE, `${total}\n`)
 
-  // compile check — tsc only, NOT the hidden tests
   const tsc = spawnSync('npx', ['tsc', '-p', 'tsconfig.app.json', '--noEmit'], { cwd: HERE, shell: true, encoding: 'utf8' })
   const compiles = tsc.status === 0
 
