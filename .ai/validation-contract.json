@@ -1,0 +1,19 @@
+{
+  "installCommand": "npm ci",
+  "lintCommand": "npm run lint",
+  "typecheckCommand": "npm run build",
+  "unitTestCommand": "npm run test",
+  "integrationOrE2eCommand": null,
+  "buildCommand": "npm run build",
+  "smokeCommand": null,
+  "maxLogLinesToRetainPerFailingCommand": 20,
+  "passCriteria": {
+    "install": "dependencies install successfully or are already present with an unchanged lockfile",
+    "lint": "exit code 0",
+    "typecheck": "build exits code 0",
+    "unitTest": "exit code 0",
+    "integrationOrE2e": "unavailable if no command exists",
+    "build": "exit code 0",
+    "smoke": "skipped unless a smoke command is configured"
+  }
+}

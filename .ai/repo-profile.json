@@ -1,0 +1,30 @@
+{
+  "appType": "React + TypeScript + Vite single-page app",
+  "packageManager": "npm",
+  "coreScripts": {
+    "dev": "npm run dev",
+    "build": "npm run build",
+    "lint": "npm run lint",
+    "test": "npm run test",
+    "preview": "npm run preview"
+  },
+  "testFramework": "Vitest + Testing Library",
+  "lintFramework": "Oxlint",
+  "buildCommand": "npm run build",
+  "sourceDirectories": ["src", "src/pages", "src/data", "src/state"],
+  "routingStructure": {
+    "root": "/",
+    "routes": ["/routes", "/accounts", "/promotions", "/visits", "/orders/new"]
+  },
+  "validationCommands": ["npm run lint", "npm run test", "npm run build"],
+  "readmeConstraints": [
+    "Do not edit src/data JSON fixtures; hidden tests use canonical data",
+    "The repo ships without tests for the missing modules; hidden tests score them"
+  ],
+  "rulesConstraints": [
+    "Do not rewrite the app unnecessarily",
+    "Prefer smallest safe code changes",
+    "Do not weaken lint, typecheck, or test rules",
+    "Do not delete tests"
+  ]
+}

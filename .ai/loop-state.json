@@ -1,0 +1,22 @@
+{
+  "iteration": 12,
+  "phase": "validated",
+  "lastFailingCommand": null,
+  "failureFingerprint": null,
+  "changedFiles": [
+    "package-lock.json",
+    "package.json",
+    ".ai/",
+    ".npmrc",
+    "scripts/",
+    "src/audit/",
+    "src/pricing/",
+    "src/settlement/"
+  ],
+  "remainingRiskAreas": [],
+  "lastSuccessfulValidationCommand": "build",
+  "finalStatus": "pass",
+  "packageLockHash": "1bd4fd04a60894c6963ebff3d9375fd5d40428c10aea1b0bd549baf4fa3e55ac",
+  "failureExcerpt": null,
+  "inspectFiles": []
+}
